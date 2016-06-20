@@ -1,0 +1,24 @@
+<div style="height: 100%; text-align: center; padding-top: 25%;">
+  {{#bind (boolean false) as |isOpen|}}
+    {{#pointer-events on-enter=(action isOpen.set true) on-leave=(action isOpen.set false)}}
+      <div class="menu">
+        <button class="btn" onclick={{action isOpen.toggle}}>
+          Show
+        </button>
+
+        <div class={{concat "dropdown-menu " (if isOpen "showing")}}>
+          <h4>Awesome?</h4>
+          {{#bind (choice (array "Yes" "No" "Meh")) as |choices|}}
+            {{#each choices.options as |option|}}
+              <label> {{option.value}}
+                <input type="radio" checked={{option.isSelected}} onclick={{action choices.select option}}/>
+              </label>
+            {{/each}}
+          {{/bind}}
+          <hr/>
+          <button onclick={{action isOpen.set false}}>Close</button>
+        </div>
+      </div>
+    {{/pointer-events}}
+  {{/bind}}
+</div>
