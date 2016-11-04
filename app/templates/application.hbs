@@ -1,21 +1,23 @@
 <div style="height: 100%; text-align: center; padding-top: 25%;">
-  {{#bind (boolean false) as |isOpen|}}
-    {{#pointer-events on-enter=(action isOpen.set true) on-leave=(action isOpen.set false)}}
-      <div class="menu">
-        <button class="btn" onclick={{action isOpen.toggle}}>Show</button>
-        <div class={{concat "dropdown-menu " (if isOpen "showing")}}>
-          <h4>Is Awesome?</h4>
-          {{#with (choice thingies) as |choices|}}
-            {{#each choices.options as |option|}}
-              <label> {{option.value}}
-                <input type="checkbox" checked={{option.isSelected}} onclick={{action choices.toggle option}}/>
-              </label>
-            {{/each}}
-          {{/with}}
-          <hr/>
-          <button class="btn" onclick={{action isOpen.set false}}>Close</button>
-        </div>
+  {{let isOpen=(Boolean false)}}
+
+  {{#pointer-events on-enter=(action isOpen.set true) on-leave=(action isOpen.set false)}}
+    <div class="menu">
+      {{let options=(Select (array "Yes" "No" "Meh") selection="Meh")}}
+
+      <button class="btn" onclick={{action isOpen.toggle}}>Show</button>
+      <div class={{concat "dropdown-menu " (if isOpen "showing")}}>
+
+        <h4>Is Awesome? {{options.selection}}</h4>
+
+        {{#each options as |option|}}
+          <label> {{option.value}}
+            <input type="checkbox" checked={{option.isSelected}} onclick={{action option.toggle}}/>
+          </label>
+        {{/each}}
+        <hr/>
+        <button class="btn" onclick={{action isOpen.set false}}>Close</button>
       </div>
-    {{/pointer-events}}
-  {{/bind}}
+    </div>
+  {{/pointer-events}}
 </div>
